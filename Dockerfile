@@ -31,4 +31,6 @@ RUN sh ~/.vim_runtime/install_awesome_vimrc.sh
 RUN mkdir /home/developer/projects
 WORKDIR /home/developer/projects
 
+# https://github.com/coder/code-server/issues/628#issuecomment-636526989
+
 CMD ["echo", "Image created"]
