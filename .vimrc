@@ -1,14 +1,14 @@
-set autoindent                                                                                                                                                                                                                        [10/94]
-set expandtab                                                                                                                                                                                                                                
-set shiftround                                                                                                                                                                                                                               
-set shiftwidth=4                                                                                                                                                                                                                             
-set smarttab                                                                                                                                                                                                                                 
-set tabstop=4                                                                                                                                                                                                                                
-set bg=dark                                                                                                                                                                                                                                  
-set number                                                                                                                                                                                                                                   
-set laststatus=2                                                                                                                                                                                                                             
-set encoding=UTF-8                                                                                                                                                                                                                           
-                                                                                                                                                                                                                                             
+set autoindent
+set expandtab
+set shiftround
+set shiftwidth=4
+set smarttab
+set tabstop=4
+set bg=dark
+set number
+set laststatus=2
+set encoding=UTF-8
+
 syntax enable
 
 let g:yats_host_keyword = 1
