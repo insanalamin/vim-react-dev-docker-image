@@ -34,10 +34,7 @@ ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 RUN node -v
 RUN npm -v
 RUN npm install -g yarn
-
-# Install Vim Awesome Configuration 
-#RUN sh ~/.vim_runtime/install_awesome_vimrc.sh
-#RUN mkdir -p /home/developer/.vim/pack/plugins/start
+RUN mkdir -p /home/developer/.vim/pack/plugins/start
 
 # Vim Plugin CoC
 # https://github.com/neoclide/coc.nvim/issues/450#issuecomment-632498202
@@ -75,9 +72,7 @@ RUN git clone https://github.com/preservim/nerdtree /home/developer/.vim/pack/pl
 RUN git clone https://github.com/tiagofumo/vim-nerdtree-syntax-highlight /home/developer/.vim/pack/plugins/start/vim-nerdtree-syntax-highlight
 RUN git clone https://github.com/ryanoasis/vim-devicons /home/developer/.vim/pack/plugins/start/vim-devicons
 
-RUN <<EOF cat >> /home/developer/.vimrc
-halo halo
-EOF
+COPY .vimrc /home/developer/.vimrc
 
 # Other useful Vim plugins
 # https://techinscribed.com/how-to-set-up-vim-as-an-ide-for-react-and-typescript-in-2020/
