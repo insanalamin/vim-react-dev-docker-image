@@ -14,6 +14,9 @@ RUN mkdir -p /home/developer/.config/coc/ultisnips
 COPY typescriptreact.snippets /home/developer/.config/coc/ultisnips/typescriptreact.snippets
 RUN chown -R developer /home/developer/.config/coc
 
+RUN mkdir /home/developer/projects
+RUN chown -R developer /home/developer/projects
+
 USER developer
 WORKDIR /home/developer
 
@@ -86,7 +89,6 @@ RUN git clone https://github.com/mileszs/ack.vim ~/.vim/pack/plugins/start/ack.v
 # Other useful Vim plugins
 # https://techinscribed.com/how-to-set-up-vim-as-an-ide-for-react-and-typescript-in-2020/
 
-RUN mkdir /home/developer/projects
 WORKDIR /home/developer/projects
 
 # https://github.com/coder/code-server/issues/628#issuecomment-636526989
