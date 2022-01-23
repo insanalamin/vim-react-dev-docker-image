@@ -34,8 +34,7 @@ set updatetime=300
 set shortmess+=c
 
 
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
+" Always show the signcolumn, otherwise it would shift the text each time " diagnostics appear/become resolved.
 if has("nvim-0.5.0") || has("patch-8.1.1564")
   " Recently vim can merge signcolumn and number column into one
   set signcolumn=number
@@ -186,6 +185,30 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 " /COC
 " ============================================================================
 
+" ============================================================================
+" LIGHTLINE 
+" ============================================================================
+
+"Display path by git root, requires vim-fugitive plugin
+"https://github.com/itchyny/lightline.vim/issues/293#issuecomment-373710096
+let g:lightline = {
+      \ 'component_function': {
+      \   'filename': 'LightlineFilename',
+      \ }
+      \ }
+
+function! LightlineFilename()
+  let root = fnamemodify(get(b:, 'git_dir'), ':h')
+  let path = expand('%:p')
+  if path[:len(root)-1] ==# root
+    return path[len(root)+1:]
+  endif
+  return expand('%')
+endfunction
+" ============================================================================
+" /LIGHTLINE 
+" ============================================================================
+
 let g:yats_host_keyword = 1
 let g:javascript_plugin_jsdoc = 1
 
@@ -206,11 +229,19 @@ endif
 " NERDTREE 
 " ============================================================================
 
-nnoremap <leader>n :NERDTreeFocus<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
+nnoremap ,nn :NERDTreeToggle<CR>
 autocmd VimEnter * NERDTree
-"autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+
+" Start NERDTree. If a file is specified, move the cursor to its window.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
+
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+
+" Open the existing NERDTree on each new tab.
+autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 
 let g:NERDTreeFileExtensionHighlightFullName = 1
 let g:NERDTreeExactMatchHighlightFullName = 1
@@ -240,3 +271,5 @@ function! XTermPasteBegin()
   set paste
   return ""
 endfunction
+
+nnoremap <leader>t :wincmd b \| bel terminal<CR>

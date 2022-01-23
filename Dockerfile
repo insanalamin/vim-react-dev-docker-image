@@ -1,7 +1,7 @@
 FROM debian:bullseye-slim
 
 RUN apt-get update
-RUN apt-get install -y build-essential vim-nox curl git zsh tmux bpytop dnsutils netcat fzf jq wrk net-tools xclip
+RUN apt-get install -y build-essential vim-nox curl git zsh tmux bpytop dnsutils netcat fzf jq wrk net-tools xclip ack
 
 RUN useradd -ms /bin/zsh developer 
 
@@ -80,6 +80,8 @@ RUN git clone https://github.com/tiagofumo/vim-nerdtree-syntax-highlight /home/d
 RUN git clone https://github.com/ryanoasis/vim-devicons /home/developer/.vim/pack/plugins/start/vim-devicons
 RUN git clone https://github.com/junegunn/fzf.vim /home/developer/.vim/pack/plugins/start/fzf.vim
 RUN git clone https://github.com/junegunn/fzf /home/developer/.vim/pack/plugins/start/fzf
+RUN git clone https://github.com/airblade/vim-gitgutter ~/.vim/pack/plugins/start/vim-gitgutter
+RUN git clone https://github.com/mileszs/ack.vim ~/.vim/pack/plugins/start/ack.vim
 
 # Other useful Vim plugins
 # https://techinscribed.com/how-to-set-up-vim-as-an-ide-for-react-and-typescript-in-2020/
