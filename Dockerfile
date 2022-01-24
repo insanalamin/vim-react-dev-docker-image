@@ -3,12 +3,12 @@ FROM debian:bullseye-slim
 RUN apt-get update
 RUN apt-get install -y build-essential vim-nox curl git zsh tmux bpytop dnsutils netcat fzf jq wrk net-tools xclip ack
 
-COPY .vimrc ~/.vimrc
+COPY .vimrc /home/root/.vimrc
 
 # Configure CoC directory
 RUN mkdir -p ~/.config/coc/extensions
 RUN mkdir -p ~/.config/coc/ultisnips
-COPY typescriptreact.snippets ~/.config/coc/ultisnips/typescriptreact.snippets
+COPY typescriptreact.snippets /home/root/.config/coc/ultisnips/typescriptreact.snippets
 
 RUN mkdir ~/projects
 
