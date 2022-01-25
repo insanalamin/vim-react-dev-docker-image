@@ -1,4 +1,10 @@
 FROM debian:bullseye-slim
 
+# https://dev.to/mainendra/neovim-as-ide-1cnp
+# https://github.com/nanotee/nvim-lua-guide
+# https://github.com/LunarVim/LunarVim
+# https://github.com/nikvdp/nvim-lsp-config/blob/master/init.vim
+# https://rafaelnexus.com/tutorials/what-is-neovim-and-how-to-install-it-with-python-support/
+
 RUN apt-get update
 RUN apt-get install -y build-essential curl git zsh tmux bpytop dnsutils netcat fzf jq wrk net-tools xclip ack
