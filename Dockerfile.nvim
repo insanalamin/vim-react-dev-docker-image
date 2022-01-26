@@ -45,3 +45,6 @@ RUN make install
 
 RUN mkdir -p /root/.config/nvim/
 RUN curl -fLo /root/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+RUN mkdir -p /root/.vim/plugged
+RUN nvim --headless +PlugInstall +qall
