@@ -9,13 +9,16 @@ FROM debian:bullseye-slim
 
 RUN apt-get update
 RUN apt-get install -y build-essential gcc libssl-dev curl git zsh tmux bpytop dnsutils netcat fzf jq wrk net-tools xclip ack autoconf automake cmake g++ gettext libncurses5-dev libtool \
-  libtool-bin libunibilium-dev libunibilium4 ninja-build pkg-config python3-pip software-properties-common unzip
+  libtool-bin libunibilium-dev libunibilium4 ninja-build pkg-config python3-pip python2 software-properties-common unzip
 
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 # Python support for NeoVim
-RUN pip install setuptools
-RUN pip install --upgrade pynvim
+RUN cd
+RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
+RUN python2 get-pip.py
+RUN pip2 install setuptools
+RUN pip2 install --upgrade pynvim
 RUN pip3 install setuptools
 RUN pip3 install --upgrade pynvim
 
@@ -30,12 +33,15 @@ RUN curl --silent -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/insta
     && nvm alias default $NODE_VERSION \
     && nvm use default
 
+# NeoVim installation
 RUN mkdir -p /root/src
 RUN cd /root/src || exit
 RUN git clone https://github.com/neovim/neovim
 RUN cd /root/src/neovim || exit
 RUN git checkout master
 RUN make distclean
+RUN make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/usr/local/"
+RUN make install
 
 RUN git clone https://github.com/neovim/neovim
 RUN cd /neovim
