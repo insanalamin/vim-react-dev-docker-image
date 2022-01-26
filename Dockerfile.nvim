@@ -9,7 +9,7 @@ FROM debian:bullseye-slim
 
 RUN apt-get update
 RUN apt-get install -y build-essential gcc libssl-dev curl git zsh tmux bpytop dnsutils netcat fzf jq wrk net-tools xclip ack autoconf automake cmake g++ gettext libncurses5-dev libtool \
-  libtool-bin libunibilium-dev libunibilium4 ninja-build pkg-config python-pip python3-pip software-properties-common unzip
+  libtool-bin libunibilium-dev libunibilium4 ninja-build pkg-config python3-pip software-properties-common unzip
 
 RUN git clone https://github.com/neovim/neovim
 RUN cd /neovim
