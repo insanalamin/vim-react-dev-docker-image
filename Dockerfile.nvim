@@ -5,6 +5,41 @@ FROM debian:bullseye-slim
 # https://github.com/LunarVim/LunarVim
 # https://github.com/nikvdp/nvim-lsp-config/blob/master/init.vim
 # https://rafaelnexus.com/tutorials/what-is-neovim-and-how-to-install-it-with-python-support/
+# https://gist.github.com/darcyparker/153124662b05c679c417
 
 RUN apt-get update
-RUN apt-get install -y build-essential curl git zsh tmux bpytop dnsutils netcat fzf jq wrk net-tools xclip ack
+RUN apt-get install -y build-essential \
+gcc \
+libssl-dev \
+curl \
+git \ 
+zsh \
+tmux \
+bpytop \
+dnsutils \
+netcat \
+fzf \
+jq \
+wrk \
+net-tools \
+xclip \
+ack \
+autoconf \
+automake \
+cmake \
+g++ \
+gettext \
+libncurses5-dev \
+libtool \
+libtool-bin \
+libunibilium-dev \
+libunibilium4 \
+ninja-build \
+pkg-config \
+python-pip \
+python3-pip \
+software-properties-common \
+unzip
+
+RUN git clone https://github.com/neovim/neovim
+RUN cd /neovim
