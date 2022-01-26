@@ -6,6 +6,7 @@ FROM debian:bullseye-slim
 # https://github.com/nikvdp/nvim-lsp-config/blob/master/init.vim
 # https://rafaelnexus.com/tutorials/what-is-neovim-and-how-to-install-it-with-python-support/
 # https://gist.github.com/darcyparker/153124662b05c679c417
+# https://www.youtube.com/watch?v=7KVgMAd16NQ
 
 RUN apt-get update
 RUN apt-get install -y build-essential gcc libssl-dev curl git zsh tmux bpytop dnsutils netcat fzf jq wrk net-tools xclip ack autoconf automake cmake g++ gettext libncurses5-dev libtool \
