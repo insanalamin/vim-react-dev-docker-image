@@ -11,5 +11,31 @@ RUN apt-get update
 RUN apt-get install -y build-essential gcc libssl-dev curl git zsh tmux bpytop dnsutils netcat fzf jq wrk net-tools xclip ack autoconf automake cmake g++ gettext libncurses5-dev libtool \
   libtool-bin libunibilium-dev libunibilium4 ninja-build pkg-config python3-pip software-properties-common unzip
 
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+# Python support for NeoVim
+RUN pip install setuptools
+RUN pip install --upgrade pynvim
+RUN pip3 install setuptools
+RUN pip3 install --upgrade pynvim
+
+# NodeJS support for NeoVim
+RUN mkdir -p /root/.nvm
+ENV NVM_DIR /root/.nvm
+# ENV NVM_DIR /usr/local/nvm
+ENV NODE_VERSION 16.13.2 
+RUN curl --silent -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash \
+    && . $NVM_DIR/nvm.sh \
+    && nvm install $NODE_VERSION \
+    && nvm alias default $NODE_VERSION \
+    && nvm use default
+
+RUN mkdir -p /root/src
+RUN cd /root/src || exit
+RUN git clone https://github.com/neovim/neovim
+RUN cd /root/src/neovim || exit
+RUN git checkout master
+RUN make distclean
+
 RUN git clone https://github.com/neovim/neovim
 RUN cd /neovim
