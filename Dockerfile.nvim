@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM node:16.13.2-bullseye-slim 
 
 # https://dev.to/mainendra/neovim-as-ide-1cnp
 # https://github.com/nanotee/nvim-lua-guide
@@ -9,42 +9,51 @@ FROM debian:bullseye-slim
 # https://www.youtube.com/watch?v=7KVgMAd16NQ
 # https://github.com/crivotz/nv-ide
 # https://www.notonlycode.org/neovim-lua-config/
+# https://www.youtube.com/watch?v=NXysez2vS4Q
 
 RUN apt-get update
-RUN apt-get install -y build-essential gcc libssl-dev curl git zsh tmux bpytop dnsutils netcat fzf jq wrk net-tools xclip ack autoconf automake cmake g++ gettext libncurses5-dev libtool \
-  libtool-bin libunibilium-dev libunibilium4 ninja-build pkg-config python3-pip python2 software-properties-common unzip
+RUN apt-get install -y build-essential gcc libssl-dev curl wget git zsh tmux bpytop dnsutils netcat fzf jq wrk net-tools xclip ack unzip
+RUN apt-get install -y autoconf automake cmake g++ gettext libncurses5-dev libtool libtool-bin libunibilium-dev libunibilium4 ninja-build pkg-config software-properties-common
 
+# OhMyZsh!
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
-# Python support for NeoVim
-RUN cd
-RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
-RUN python2 get-pip.py
-RUN pip2 install setuptools
-RUN pip2 install --upgrade pynvim
-RUN pip3 install setuptools
-RUN pip3 install --upgrade pynvim
+WORKDIR /root/src
 
-# NodeJS support for NeoVim
-RUN mkdir -p /root/.nvm
-ENV NVM_DIR /root/.nvm
-# ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION 16.13.2 
-RUN curl --silent -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash \
-    && . $NVM_DIR/nvm.sh \
-    && nvm install $NODE_VERSION \
-    && nvm alias default $NODE_VERSION \
-    && nvm use default
+# Jetbrains Mono
+RUN wget https://download.jetbrains.com/fonts/JetBrainsMono-1.0.3.zip
+RUN unzip JetBrainsMono-1.0.3.zip
+RUN ls -la
+RUN mv JetBrainsMono-1.0.3/ttf/JetBrainsMono-*.ttf /usr/share/fonts/
 
-# NeoVim installation
-RUN mkdir -p /root/src && cd /root/src && git clone https://github.com/neovim/neovim
-RUN cd /root/src/neovim && git checkout master && make distclean && make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/usr/local/" && make install
+# Ctags
+RUN git clone https://github.com/universal-ctags/ctags.git
+RUN cd /root/src/ctags && ./autogen.sh && ./configure && make && make install
 
-COPY nvim /root/.config/nvim
+# Ripgrep
+RUN curl -LO https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb
+RUN ls -la
+RUN dpkg -i ripgrep_13.0.0_amd64.deb
 
-# RUN mkdir -p /root/.config/nvim/
+# Code-minimap
+RUN curl -LO https://github.com/wfxr/code-minimap/releases/download/v0.6.4/code-minimap_0.6.4_amd64.deb
+RUN ls -la
+RUN dpkg -i code-minimap_0.6.4_amd64.deb
 
-RUN curl -fLo /root/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+# Glow
+RUN curl -LO https://github.com/charmbracelet/glow/releases/download/v1.4.1/glow_1.4.1_linux_amd64.deb 
+RUN ls -la
+RUN dpkg -i glow_1.4.1_linux_amd64.deb
 
-# RUN mkdir -p /root/.vim/plugged
-# RUN nvim --headless +PlugInstall +qall
+# Prettierd
+RUN npm install -g @fsouza/prettierd
+
+# NeoVim
+RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+RUN chmod u+x nvim.appimage
+RUN ls -la
+RUN /root/src/nvim.appimage --appimage-extract
+RUN /root/src/squashfs-root/AppRun --version
+RUN mv /root/src/squashfs-root /
+RUN ln -s /squashfs-root/AppRun /usr/bin/nvim
+
