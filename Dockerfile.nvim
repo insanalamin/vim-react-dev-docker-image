@@ -8,6 +8,7 @@ FROM debian:bullseye-slim
 # https://gist.github.com/darcyparker/153124662b05c679c417
 # https://www.youtube.com/watch?v=7KVgMAd16NQ
 # https://github.com/crivotz/nv-ide
+# https://www.notonlycode.org/neovim-lua-config/
 
 RUN apt-get update
 RUN apt-get install -y build-essential gcc libssl-dev curl git zsh tmux bpytop dnsutils netcat fzf jq wrk net-tools xclip ack autoconf automake cmake g++ gettext libncurses5-dev libtool \
@@ -36,17 +37,14 @@ RUN curl --silent -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/insta
     && nvm use default
 
 # NeoVim installation
-RUN mkdir -p /root/src
-RUN cd /root/src || exit
-RUN git clone https://github.com/neovim/neovim
-RUN cd /root/src/neovim || exit
-RUN git checkout master
-RUN make distclean
-RUN make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/usr/local/"
-RUN make install
+RUN mkdir -p /root/src && cd /root/src && git clone https://github.com/neovim/neovim
+RUN cd /root/src/neovim && git checkout master && make distclean && make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/usr/local/" && make install
 
-RUN mkdir -p /root/.config/nvim/
+COPY nvim /root/.config/nvim
+
+# RUN mkdir -p /root/.config/nvim/
+
 RUN curl -fLo /root/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-RUN mkdir -p /root/.vim/plugged
-RUN nvim --headless +PlugInstall +qall
+# RUN mkdir -p /root/.vim/plugged
+# RUN nvim --headless +PlugInstall +qall
