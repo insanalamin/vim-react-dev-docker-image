@@ -10,6 +10,7 @@ FROM node:16.13.2-bullseye-slim
 # https://github.com/crivotz/nv-ide
 # https://www.notonlycode.org/neovim-lua-config/
 # https://www.youtube.com/watch?v=NXysez2vS4Q
+# https://dev.to/vonheikemen/neovim-using-vim-plug-in-lua-3oom
 
 RUN apt-get update
 RUN apt-get install -y build-essential gcc libssl-dev curl wget git zsh tmux bpytop dnsutils netcat fzf jq wrk net-tools xclip ack unzip
@@ -19,6 +20,15 @@ RUN apt-get install -y autoconf automake cmake g++ gettext libncurses5-dev libto
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 WORKDIR /root/src
+
+# NeoVim
+RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+RUN chmod u+x nvim.appimage
+RUN ls -la
+RUN /root/src/nvim.appimage --appimage-extract
+RUN /root/src/squashfs-root/AppRun --version
+RUN mv /root/src/squashfs-root /
+RUN ln -s /squashfs-root/AppRun /usr/bin/nvim
 
 # Jetbrains Mono
 RUN wget https://download.jetbrains.com/fonts/JetBrainsMono-1.0.3.zip
@@ -48,12 +58,18 @@ RUN dpkg -i glow_1.4.1_linux_amd64.deb
 # Prettierd
 RUN npm install -g @fsouza/prettierd
 
-# NeoVim
-RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-RUN chmod u+x nvim.appimage
+# GH CLI
+RUN curl -LO https://github.com/cli/cli/releases/download/v2.4.0/gh_2.4.0_linux_amd64.deb 
 RUN ls -la
-RUN /root/src/nvim.appimage --appimage-extract
-RUN /root/src/squashfs-root/AppRun --version
-RUN mv /root/src/squashfs-root /
-RUN ln -s /squashfs-root/AppRun /usr/bin/nvim
+RUN dpkg -i gh_2.4.0_linux_amd64.deb
 
+# LSP
+RUN npm install -g typescript typescript-language-server eslint prettier
+RUN npm install -g dockerfile-language-server-nodejs
+RUN npm install -g vscode-langservers-extracted
+
+COPY nvim /root/.config/nvim
+RUN curl -fLo /root/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim /root/.local/share/nvim/site/pack/packer/start/packer.nvim
+# RUN nvim --headless +PlugInstall +qall
