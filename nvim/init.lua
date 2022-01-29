@@ -1,3 +1,18 @@
+function isModuleAvailable(name)
+  if package.loaded[name] then
+    return true
+  else
+    for _, searcher in ipairs(package.searchers or package.loaders) do
+      local loader = searcher(name)
+      if type(loader) == 'function' then
+        package.preload[name] = loader
+        return true
+      end
+    end
+    return false
+  end
+end
+
 -- Packer
 require('plugins')
 -- Config
@@ -10,22 +25,3 @@ require('settings.filetype')
 require('lsp')
 -- Keymap
 require('settings.keymap')
-
-local Plug = require 'plugins.vimplug'
-
-Plug.begin('~/.config/nvim/plugged')
-  -- LSP
-  Plug 'neovim/nvim-lspconfig'
-  Plug 'onsails/lspkind-nvim'
-  Plug('weilbith/nvim-code-action-menu', {
-    cmd = 'CodeActionMenu'
-  })
-
-  -- Icons
-  Plug 'kyazdani42/nvim-web-devicons'
-  Plug 'ryanoasis/vim-devicons'
-Plug.ends()
-
-require'nvim-tree'.setup {}
-require'lspconfig'.tsserver.setup {}
-require('lspkind').init()
