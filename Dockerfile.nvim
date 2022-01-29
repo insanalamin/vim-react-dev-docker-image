@@ -72,6 +72,13 @@ RUN npm install -g typescript typescript-language-server eslint prettier
 RUN npm install -g dockerfile-language-server-nodejs
 RUN npm install -g vscode-langservers-extracted
 
+RUN curl -LO https://github.com/sumneko/lua-language-server/releases/download/2.6.3/lua-language-server-2.6.3-linux-x64.tar.gz
+RUN mkdir /root/src/lua-language-server
+RUN tar -zxvf /root/src/lua-language-server-2.6.3-linux-x64.tar.gz -C lua_language_server
+RUN chmod a+rx /root/src/lua_language_server/bin/lua-language-server
+RUN cp /root/src/lua_language_server/bin/lua-language-server /usr/local/bin
+
+# VIM Configuration
 COPY nvim /root/.config/nvim
 RUN curl -fLo /root/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
