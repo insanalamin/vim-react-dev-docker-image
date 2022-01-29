@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t mechaid/vim-react-dev:latest -f Dockerfile.nvim .
+docker build -t mechaid/vim-react-dev:latest -f nvim.Dockerfile .

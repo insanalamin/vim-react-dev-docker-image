@@ -74,13 +74,27 @@ RUN npm install -g vscode-langservers-extracted
 
 RUN curl -LO https://github.com/sumneko/lua-language-server/releases/download/2.6.3/lua-language-server-2.6.3-linux-x64.tar.gz
 RUN mkdir /root/src/lua-language-server
-RUN tar -zxvf /root/src/lua-language-server-2.6.3-linux-x64.tar.gz -C lua_language_server
-RUN chmod a+rx /root/src/lua_language_server/bin/lua-language-server
-RUN cp /root/src/lua_language_server/bin/lua-language-server /usr/local/bin
+RUN tar -zxvf /root/src/lua-language-server-2.6.3-linux-x64.tar.gz -C lua-language-server
+RUN chmod a+rx /root/src/lua-language-server/bin/lua-language-server
+RUN cp /root/src/lua-language-server/bin/lua-language-server /usr/local/bin
 
 # VIM Configuration
-COPY nvim /root/.config/nvim
 RUN curl -fLo /root/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+COPY nvim/init.lua /root/.config/nvim/init.lua
+COPY nvim/lua /root/.config/nvim/lua
 
 # RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim /root/.local/share/nvim/site/pack/packer/start/packer.nvim
-# RUN nvim --headless +PlugInstall +qall
+RUN nvim --headless +PlugInstall +qall
+RUN nvim '+TSUpdateSync bash' +qall
+RUN nvim '+TSUpdateSync html' +qall
+RUN nvim '+TSUpdateSync javascript' +qall
+RUN nvim '+TSUpdateSync lua' +qall
+RUN nvim '+TSUpdateSync json' +qall
+RUN nvim '+TSUpdateSync latex' +qall
+RUN nvim '+TSUpdateSync make' +qall
+RUN nvim '+TSUpdateSync python' +qall
+RUN nvim '+TSUpdateSync php' +qall
+RUN nvim '+TSUpdateSync yaml' +qall
+RUN nvim '+TSUpdateSync vim' +qall
+RUN nvim '+TSUpdateSync tsx' +qall
+RUN nvim '+TSUpdateSync typescript' +qall

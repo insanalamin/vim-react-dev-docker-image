@@ -3,9 +3,6 @@ vim.cmd 'autocmd BufWritePost plugins.lua PlugUpdate' -- Auto compile when there
 local Plug = require 'plugins.vimplug'
 
 Plug.begin('~/.config/nvim/plugged')
-  local lua_path = function(name)
-    return string.format("require'plugins.%s'", name)
-  end
 
   -- LSP
   Plug 'neovim/nvim-lspconfig' -- Quickstart configurations for the Nvim LSP client
@@ -23,22 +20,37 @@ Plug.begin('~/.config/nvim/plugged')
   Plug 'hrsh7th/cmp-path'
   Plug 'hrsh7th/cmp-calc'
   Plug 'hrsh7th/cmp-cmdline'
-  -- Plug 'ray-x/cmp-treesitter'
-  -- Plug 'lukas-reineke/cmp-rg'
-  -- Plug 'quangnguyen30192/cmp-nvim-tags'
-  -- Plug 'rafamadriz/friendly-snippets'
-  -- Plug 'windwp/nvim-autopairs', config = lua_path"nvim-autopairs"
-  -- Plug 'AndrewRadev/tagalong.vim'
-  -- Plug 'andymass/vim-matchup'
+  Plug 'ray-x/cmp-treesitter'
+  Plug 'lukas-reineke/cmp-rg'
+  Plug 'quangnguyen30192/cmp-nvim-tags'
+  Plug 'rafamadriz/friendly-snippets'
+  Plug('windwp/nvim-autopairs', {config = function() require "plugins.nvim-autopairs" end})
+  Plug 'AndrewRadev/tagalong.vim'
+  Plug 'andymass/vim-matchup'
+
+  -- Treesitter
+  Plug('nvim-treesitter/nvim-treesitter', {
+    config = function() require "plugins.treesitter" end
+  })
+  -- use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = lua_path"treesitter" }
+  -- use { 'p00f/nvim-ts-rainbow', config = lua_path"nvim-ts-rainbow" }
+  -- use { 'lukas-reineke/indent-blankline.nvim', config = lua_path"indent-blankline" }
+  -- use { 'JoosepAlviste/nvim-ts-context-commentstring' }
+  -- use { 'romgrk/nvim-treesitter-context' }
+  -- use { 'SmiteshP/nvim-gps', config = lua_path"nvim-gps" }
 
   -- Explorer
-  Plug('kyazdani42/nvim-tree.lua', {config = function() require 'plugins.nvimtree' end})
+  Plug('kyazdani42/nvim-tree.lua', {config = function() require "plugins.nvimtree" end})
 
   -- Icons
   Plug 'kyazdani42/nvim-web-devicons'
   Plug 'ryanoasis/vim-devicons'
-Plug.ends()
 
-if isModuleAvailable('lspkind') then
-  require('lspkind').init()
-end
+  -- Registers & clipboard
+  Plug 'tversteeg/registers.nvim'
+  Plug('AckslD/nvim-neoclip.lua', {config = function() require "plugins.nvim-neoclip" end})
+
+  -- Colorscheme
+  Plug('folke/tokyonight.nvim', {branch = 'main'})
+
+Plug.ends()
