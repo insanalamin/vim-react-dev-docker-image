@@ -11,6 +11,7 @@ FROM node:16.13.2-bullseye-slim
 # https://www.notonlycode.org/neovim-lua-config/
 # https://www.youtube.com/watch?v=NXysez2vS4Q
 # https://dev.to/vonheikemen/neovim-using-vim-plug-in-lua-3oom
+# https://github.com/albingroen/quick.nvim
 
 RUN apt-get update
 RUN apt-get install -y build-essential gcc libssl-dev curl wget git zsh tmux bpytop dnsutils netcat fzf jq wrk net-tools xclip ack unzip
@@ -59,9 +60,12 @@ RUN dpkg -i glow_1.4.1_linux_amd64.deb
 RUN npm install -g @fsouza/prettierd
 
 # GH CLI
-RUN curl -LO https://github.com/cli/cli/releases/download/v2.4.0/gh_2.4.0_linux_amd64.deb 
+RUN curl -LO https://github.com/cli/cli/releases/download/v2.4.0/gh_2.4.0_linux_amd64.deb
 RUN ls -la
 RUN dpkg -i gh_2.4.0_linux_amd64.deb
+
+# Treesitter
+RUN npm install -g tree-sitter-cli
 
 # LSP
 RUN npm install -g typescript typescript-language-server eslint prettier
