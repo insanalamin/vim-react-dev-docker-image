@@ -1,5 +1,5 @@
 if isModuleAvailable('nvim-autopairs') and isModuleAvailable('nvim-treesitter') then
-  print('nvim-autopairs loaded')
+  print('nvim-autopairs active')
   require('nvim-autopairs').setup()
 
   local remap = vim.api.nvim_set_keymap

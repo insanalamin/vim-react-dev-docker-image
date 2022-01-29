@@ -8,6 +8,7 @@ vim.g.nvim_tree_icons = {
 }
 
 if isModuleAvailable('nvim-tree') then
+  print('nvim-tree active')
   -- following options are the default
   require'nvim-tree'.setup {
     -- disables netrw completely

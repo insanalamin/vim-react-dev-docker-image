@@ -32,12 +32,17 @@ Plug.begin('~/.config/nvim/plugged')
   Plug('nvim-treesitter/nvim-treesitter', {
     config = function() require "plugins.treesitter" end
   })
-  -- use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = lua_path"treesitter" }
-  -- use { 'p00f/nvim-ts-rainbow', config = lua_path"nvim-ts-rainbow" }
-  -- use { 'lukas-reineke/indent-blankline.nvim', config = lua_path"indent-blankline" }
-  -- use { 'JoosepAlviste/nvim-ts-context-commentstring' }
-  -- use { 'romgrk/nvim-treesitter-context' }
-  -- use { 'SmiteshP/nvim-gps', config = lua_path"nvim-gps" }
+  Plug('p00f/nvim-ts-rainbow', {
+    config = function() require "plugins.nvim-ts-rainbow" end
+  })
+  Plug('lukas-reineke/indent-blankline.nvim', {
+    config = function() require "plugins.indent-blankline" end
+  })
+  Plug 'JoosepAlviste/nvim-ts-context-commentstring'
+  Plug 'romgrk/nvim-treesitter-context'
+  Plug('SmiteshP/nvim-gps', {
+    config = function() require "plugins.nvim-gps" end
+  })
 
   -- Explorer
   Plug('kyazdani42/nvim-tree.lua', {config = function() require "plugins.nvimtree" end})
@@ -46,11 +51,30 @@ Plug.begin('~/.config/nvim/plugged')
   Plug 'kyazdani42/nvim-web-devicons'
   Plug 'ryanoasis/vim-devicons'
 
+  -- Status Line and Bufferline
+  Plug('famiu/feline.nvim', {
+    config = function() require "plugins.feline" end
+  })
+  Plug 'romgrk/barbar.nvim'
+
   -- Registers & clipboard
   Plug 'tversteeg/registers.nvim'
   Plug('AckslD/nvim-neoclip.lua', {config = function() require "plugins.nvim-neoclip" end})
 
   -- Colorscheme
   Plug('folke/tokyonight.nvim', {branch = 'main'})
+
+  -- General Plugins
+  -- use { 'rcarriga/nvim-notify', config = lua_path"nvim-notify" }
+  -- use { 'airblade/vim-rooter', config = lua_path"vim-rooter" }
+  -- use { 'mhinz/vim-startify' }
+  -- use { 'goolord/alpha-nvim', config = lua_path"alpha-nvim" }
+  -- use { 'jeffkreeftmeijer/vim-numbertoggle' }
+  -- use { 'lambdalisue/suda.vim' }
+  -- use { 'numtostr/FTerm.nvim', config = lua_path"fterm" }
+  -- use { 'wfxr/minimap.vim', config = lua_path"minimap" }
+  -- use { 'folke/todo-comments.nvim', config = lua_path"todo-comments" }
+  -- use { 'luukvbaal/stabilize.nvim', config = lua_path"stabilize" }
+  -- use { "beauwilliams/focus.nvim", config = lua_path"focus" }
 
 Plug.ends()

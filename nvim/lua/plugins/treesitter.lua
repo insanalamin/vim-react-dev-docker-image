@@ -1,5 +1,5 @@
 if isModuleAvailable('nvim-treesitter') then
-  print('nvim-treesitter start')
+  print('nvim-treesitter active')
 
   require'nvim-treesitter.configs'.setup {
     -- ensure_installed = {"bash", "html", "javascript", "lua", "json", "latex", "make", "python", "php", "typescript", "yaml", "vim", "tsx", "typescript"},
