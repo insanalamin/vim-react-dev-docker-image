@@ -1,5 +1,8 @@
-if isModuleAvailable('nvim-autopairs') and isModuleAvailable('nvim-treesitter') then
+if isModuleAvailable('nvim-autopairs') and isModuleAvailable('nvim-treesitter') and isModuleAvailable('nvim-ts-autotag') then
   print('nvim-autopairs active')
+  print('nvim-ts-autotag active')
+
+  require('nvim-ts-autotag').setup()
   require('nvim-autopairs').setup()
 
   local remap = vim.api.nvim_set_keymap
