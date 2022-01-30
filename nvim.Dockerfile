@@ -14,13 +14,28 @@ FROM node:16.13.2-bullseye-slim
 # https://github.com/albingroen/quick.nvim
 
 RUN apt-get update
-RUN apt-get install -y build-essential gcc libssl-dev curl wget git zsh tmux bpytop dnsutils netcat fzf jq wrk net-tools xclip ack unzip
+RUN apt-get install -y build-essential gcc libssl-dev curl wget git zsh tmux bpytop dnsutils netcat fzf jq wrk net-tools xclip ack unzip httpie
 RUN apt-get install -y autoconf automake cmake g++ gettext libncurses5-dev libtool libtool-bin libunibilium-dev libunibilium4 ninja-build pkg-config software-properties-common
 
 # OhMyZsh!
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 WORKDIR /root/src
+
+# Pyenv
+RUN curl https://pyenv.run | bash
+# RUN echo 'export PATH="/root/.pyenv/bin:$PATH"' >> /root/.zshrc
+SHELL ["/usr/bin/zsh", "-l", "-c"]
+ENV PATH="/root/.pyenv/bin:${PATH}"
+ENV PATH="/root/.pyenv/shims:${PATH}"
+RUN pyenv --version 
+RUN pyenv update 
+
+# OhMyTmux!
+ENV EDITOR=nvim
+RUN git clone https://github.com/gpakosz/.tmux.git /root/src/oh-my-tmux
+RUN ln -s -f /root/src/oh-my-tmux/.tmux.conf /root/.tmux.conf
+RUN cp /root/src/oh-my-tmux/.tmux.conf.local /root/.tmux.conf.local
 
 # NeoVim
 RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
@@ -77,6 +92,22 @@ RUN mkdir /root/src/lua-language-server
 RUN tar -zxvf /root/src/lua-language-server-2.6.3-linux-x64.tar.gz -C lua-language-server
 RUN chmod a+rx /root/src/lua-language-server/bin/lua-language-server
 RUN cp /root/src/lua-language-server/bin/lua-language-server /usr/local/bin
+
+# Python Environment
+RUN apt-get install -y make build-essential libssl-dev zlib1g-dev \
+libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
+libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+RUN pyenv install 3.9.10
+RUN pyenv global 3.9.10
+RUN python --version
+RUN pip --version
+RUN pip install httpx python-multipart mongoengine nats-python psycopg2-binary requests bcrypt
+
+RUN pip --version
+RUN pip install 'python-lsp-server[all]'
+RUN npm install -g pyright
+RUN python-lsp-server --version
+RUN pyright --version
 
 # VIM Configuration
 RUN curl -fLo /root/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
