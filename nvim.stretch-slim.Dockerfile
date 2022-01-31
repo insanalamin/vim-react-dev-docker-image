@@ -1,7 +1,7 @@
 FROM node:16.13.2-stretch-slim 
 
 RUN apt-get update
-RUN apt-get install -y curl git ack autoconf automake cmake libtool libtool-bin pkg-config software-properties-common xclip locales 
+RUN apt-get install -y curl git ack autoconf automake cmake libtool libtool-bin pkg-config software-properties-common xclip locales unzip 
 
 WORKDIR /root/src
 
@@ -43,33 +43,31 @@ RUN npm install -g typescript typescript-language-server eslint prettier dockerf
 # ===============================================================================
 
 # Jetbrains Mono
-RUN wget https://download.jetbrains.com/fonts/JetBrainsMono-1.0.3.zip
-RUN unzip JetBrainsMono-1.0.3.zip
-RUN ls -la
-RUN mv JetBrainsMono-1.0.3/ttf/JetBrainsMono-*.ttf /usr/share/fonts/
+RUN mkdir -p /usr/share/fonts && curl -LO https://download.jetbrains.com/fonts/JetBrainsMono-1.0.3.zip && unzip JetBrainsMono-1.0.3.zip && mv JetBrainsMono-1.0.3/ttf/JetBrainsMono-*.ttf /usr/share/fonts/
 
 # Code-minimap
-RUN curl -LO https://github.com/wfxr/code-minimap/releases/download/v0.6.4/code-minimap_0.6.4_amd64.deb
-RUN ls -la
-RUN dpkg -i code-minimap_0.6.4_amd64.deb
+RUN curl -LO https://github.com/wfxr/code-minimap/releases/download/v0.6.4/code-minimap_0.6.4_amd64.deb && dpkg -i code-minimap_0.6.4_amd64.deb
 
 # Glow
-RUN curl -LO https://github.com/charmbracelet/glow/releases/download/v1.4.1/glow_1.4.1_linux_amd64.deb 
-RUN ls -la
-RUN dpkg -i glow_1.4.1_linux_amd64.deb
+RUN curl -LO https://github.com/charmbracelet/glow/releases/download/v1.4.1/glow_1.4.1_linux_amd64.deb && dpkg -i glow_1.4.1_linux_amd64.deb
 
 # Prettierd
 RUN npm install -g @fsouza/prettierd
 
 # GH CLI
-RUN curl -LO https://github.com/cli/cli/releases/download/v2.4.0/gh_2.4.0_linux_amd64.deb
-RUN ls -la
-RUN dpkg -i gh_2.4.0_linux_amd64.deb
+RUN curl -LO https://github.com/cli/cli/releases/download/v2.4.0/gh_2.4.0_linux_amd64.deb && dpkg -i gh_2.4.0_linux_amd64.deb
+
+# Lazygit
+RUN curl -LO https://github.com/jesseduffield/lazygit/releases/download/v0.32.2/lazygit_0.32.2_Linux_x86_64.tar.gz
+RUN mkdir -p /root/src/lazygit
+RUN tar -xvf lazygit_0.32.2_Linux_x86_64.tar.gz -C /root/src/lazygit
+RUN cp /root/src/lazygit/lazygit /usr/bin
 
 # ===============================================================================
 
 # VIM Configuration
-COPY nvim/init.lua /root/.config/nvim/init.lua && nvim/lua /root/.config/nvim/lua
+COPY nvim/init.lua /root/.config/nvim
+COPY nvim/lua /root/.config/nvim/lua
 
 # RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim /root/.local/share/nvim/site/pack/packer/start/packer.nvim
 RUN nvim --headless +PlugInstall +qall
