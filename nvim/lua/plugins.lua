@@ -1,11 +1,11 @@
-  vim.cmd 'autocmd BufWritePost plugins.lua PlugUpdate' -- Auto compile when there are changes in plugins.lua
+-- vim.cmd 'autocmd BufWritePost plugins.lua PlugUpdate' -- Auto compile when there are changes in plugins.lua
 
 local Plug = require 'plugins.vimplug'
 
 Plug.begin('~/.config/nvim/plugged')
 
   -- LSP
-  Plug 'neovim/nvim-lspconfig' -- Quickstart configurations for the Nvim LSP client
+  Plug('neovim/nvim-lspconfig', {config = function() require "plugins.lspconfig" end}) -- Quickstart configurations for the Nvim LSP client
   Plug 'onsails/lspkind-nvim' -- vscode-like pictograms for neovim lsp completion items
   Plug('weilbith/nvim-code-action-menu', { -- Pop-up menu for code actions to show meta-information and diff preview
     cmd = 'CodeActionMenu'
@@ -30,20 +30,12 @@ Plug.begin('~/.config/nvim/plugged')
   Plug 'andymass/vim-matchup'
 
   -- Treesitter
-  Plug('nvim-treesitter/nvim-treesitter', {
-    config = function() require "plugins.treesitter" end
-  })
-  Plug('p00f/nvim-ts-rainbow', {
-    config = function() require "plugins.nvim-ts-rainbow" end
-  })
-  Plug('lukas-reineke/indent-blankline.nvim', {
-    config = function() require "plugins.indent-blankline" end
-  })
+  Plug('nvim-treesitter/nvim-treesitter', {config = function() require "plugins.treesitter" end})
+  Plug('p00f/nvim-ts-rainbow', {config = function() require "plugins.nvim-ts-rainbow" end})
+  Plug('lukas-reineke/indent-blankline.nvim', {config = function() require "plugins.indent-blankline" end})
   Plug 'JoosepAlviste/nvim-ts-context-commentstring'
   Plug 'romgrk/nvim-treesitter-context'
-  Plug('SmiteshP/nvim-gps', {
-    config = function() require "plugins.nvim-gps" end
-  })
+  Plug('SmiteshP/nvim-gps', {config = function() require "plugins.nvim-gps" end})
 
   -- Syntax
   Plug('leafgarland/typescript-vim')
@@ -60,22 +52,16 @@ Plug.begin('~/.config/nvim/plugged')
   Plug 'ryanoasis/vim-devicons'
 
   -- Status Line and Bufferline
-  Plug('famiu/feline.nvim', {
-    config = function() require "plugins.feline" end
-  })
-  Plug 'romgrk/barbar.nvim'
+  Plug('famiu/feline.nvim', {config = function() require "plugins.feline" end})
+  Plug('romgrk/barbar.nvim', {config = function() require "plugins.barbar" end})
 
   -- Telescope
   Plug 'nvim-lua/popup.nvim'
   Plug 'nvim-lua/plenary.nvim'
-  Plug('nvim-telescope/telescope.nvim', {
-    config = function() require "plugins.telescope" end
-  })
+  Plug('nvim-telescope/telescope.nvim', {config = function() require "plugins.telescope" end})
   Plug 'nvim-telescope/telescope-fzy-native.nvim'
   Plug 'nvim-telescope/telescope-project.nvim'
-  Plug('pwntester/octo.nvim', {
-    config = function() require "plugins.octo" end
-  })
+  Plug('pwntester/octo.nvim', {config = function() require "plugins.octo" end})
 
   -- Color
   Plug 'lpinilla/vim-codepainter'
@@ -97,15 +83,6 @@ Plug.begin('~/.config/nvim/plugged')
   Plug('ThePrimeagen/harpoon', {config = function() require "plugins.harpoon" end})
   Plug('karb94/neoscroll.nvim', {config = function() require "plugins.neoscroll" end})
   Plug 'dstein64/nvim-scrollview'
-  -- use { 'nacro90/numb.nvim', config = lua_path"numb" }
-  -- use { 'dyng/ctrlsf.vim', config = lua_path"ctrlsf" }
-  -- use { 'kevinhwang91/nvim-hlslens', config = lua_path"hlslens" }
-  -- use { 'ggandor/lightspeed.nvim', config = lua_path"lightspeed" }
-  -- use { 'ThePrimeagen/harpoon', config = lua_path"harpoon" }
-  -- use { 'karb94/neoscroll.nvim', config = lua_path"neoscroll" }
-  -- use { 'dstein64/nvim-scrollview' }
-  -- use { 'chaoren/vim-wordmotion' }
-  -- use { 'fedepujol/move.nvim' }
 
    -- Tim Pope docet
   Plug 'tpope/vim-sensible'
@@ -113,6 +90,7 @@ Plug.begin('~/.config/nvim/plugged')
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-capslock'
   Plug 'tpope/vim-dadbod'
+  Plug 'kristijanhusak/vim-dadbod-ui'
   Plug 'tpope/vim-jdaddy'
   Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-commentary'
@@ -120,6 +98,7 @@ Plug.begin('~/.config/nvim/plugged')
 
   -- Colorscheme
   Plug('folke/tokyonight.nvim', {branch = 'main'})
+  Plug 'https://github.com/arcticicestudio/nord-vim'
 
   -- General Plugins
   Plug('rcarriga/nvim-notify', {config = function() require "plugins.nvim-notify" end})
@@ -130,16 +109,6 @@ Plug.begin('~/.config/nvim/plugged')
   Plug('wfxr/minimap.vim', {config = function() require "plugins.minimap" end})
   Plug('folke/todo-comments.nvim', {config = function() require "plugins.todo-comments" end})
   Plug('simrat39/symbols-outline.nvim', {config = function() require "plugins.symbols-outline" end})
-  -- use { 'rcarriga/nvim-notify', config = lua_path"nvim-notify" }
-  -- use { 'airblade/vim-rooter', config = lua_path"vim-rooter" }
-  -- use { 'mhinz/vim-startify' }
-  -- use { 'goolord/alpha-nvim', config = lua_path"alpha-nvim" }
-  -- use { 'jeffkreeftmeijer/vim-numbertoggle' }
-  -- use { 'lambdalisue/suda.vim' }
-  -- use { 'numtostr/FTerm.nvim', config = lua_path"fterm" }
-  -- use { 'wfxr/minimap.vim', config = lua_path"minimap" }
-  -- use { 'folke/todo-comments.nvim', config = lua_path"todo-comments" }
-  -- use { 'luukvbaal/stabilize.nvim', config = lua_path"stabilize" }
-  -- use { "beauwilliams/focus.nvim", config = lua_path"focus" }
+
 
 Plug.ends()
