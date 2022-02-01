@@ -1,7 +1,7 @@
-vim.api.nvim_set_keymap('n', '<F6>', '<CMD>lua require("FTerm").toggle()<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('t', '<F6>', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>tm', '<CMD>lua require("FTerm").toggle()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('t', '<leader>tm', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<F7>', ':NvimTreeToggle<CR>', {noremap = false, silent = true})
-vim.api.nvim_set_keymap('n', '<leader>nm', ':Dispatch yarn start<CR>', {noremap = false, silent = false})
+vim.api.nvim_set_keymap('n', '<leader>ys', ':Dispatch yarn start<CR>', {noremap = false, silent = false})
 
 -- Git
 -- vim.api.nvim_set_keymap('n', '<leader>gf', ':20G<CR>', {noremap = false, silent = false})
@@ -56,3 +56,11 @@ vim.api.nvim_set_keymap('n', '*', "*<Cmd>lua require('hlslens').start()<CR>", { 
 vim.api.nvim_set_keymap('n', '#', "#<Cmd>lua require('hlslens').start()<CR>", { noremap = true })
 vim.api.nvim_set_keymap('n', 'g*', "g*<Cmd>lua require('hlslens').start()<CR>", { noremap = true })
 vim.api.nvim_set_keymap('n', 'g#', "g#<Cmd>lua require('hlslens').start()<CR>", { noremap = true })
+
+-- Barbar
+vim.api.nvim_set_keymap('n', '<A-,>', ':BufferPrevious<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<A-.>', ':BufferNext<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<A-c>', ':BufferClose<CR>', {noremap = true, silent = true})
+
+-- Symbols Outline
+vim.api.nvim_set_keymap('n', '<F6>', ":SymbolsOutline<CR>", { noremap = true })
