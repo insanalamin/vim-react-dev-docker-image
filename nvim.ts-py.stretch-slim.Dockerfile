@@ -1,7 +1,15 @@
 FROM node:16.13.2-stretch-slim 
 
 RUN apt-get update
-RUN apt-get install -y curl git ack autoconf automake cmake libtool libtool-bin pkg-config software-properties-common xclip locales unzip httpie jq
+RUN apt-get install -y curl git ack autoconf automake cmake libtool libtool-bin pkg-config software-properties-common xclip locales unzip httpie jq libssl-dev openssl make gcc zlib1g-dev wget 
+
+WORKDIR /opt
+RUN wget https://www.python.org/ftp/python/3.9.9/Python-3.9.9.tgz
+RUN tar xzvf Python-3.9.9.tgz && cd Python-3.9.9 && ./configure && make && make install
+RUN ln -fs /opt/Python-3.9.9/python /usr/bin/python
+RUN python -m ensurepip --upgrade
+RUN wget https://bootstrap.pypa.io/get-pip.py
+RUN python get-pip.py
 
 WORKDIR /root/src
 
@@ -39,6 +47,9 @@ RUN npm install -g tree-sitter-cli
 
 # LSP
 RUN npm install -g typescript typescript-language-server eslint prettier dockerfile-language-server-nodejs vscode-langservers-extracted
+RUN apt-get install -y python3-setuptools python-setuptools
+RUN pip install 'python-lsp-server[all]' pyright pylint --upgrade
+RUN pip install uvicorn requests nats-python psycopg2-binary pyjwt bcrypt uvicorn[standard] fastapi httpx starlette pymongo
 
 # ===============================================================================
 
@@ -62,6 +73,9 @@ RUN curl -LO https://github.com/jesseduffield/lazygit/releases/download/v0.32.2/
 RUN mkdir -p /root/src/lazygit
 RUN tar -xvf lazygit_0.32.2_Linux_x86_64.tar.gz -C /root/src/lazygit
 RUN cp /root/src/lazygit/lazygit /usr/bin
+
+# PSQL
+RUN apt-get install -y pgcli postgresql-client mycli mongodb-clients
 
 # ===============================================================================
 
