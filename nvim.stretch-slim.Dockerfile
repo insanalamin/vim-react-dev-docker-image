@@ -63,6 +63,18 @@ RUN mkdir -p /root/src/lazygit
 RUN tar -xvf lazygit_0.32.2_Linux_x86_64.tar.gz -C /root/src/lazygit
 RUN cp /root/src/lazygit/lazygit /usr/bin
 
+# Zsh & Tmux
+RUN apt-get install zsh tmux
+
+# OhMyZsh
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+# OhMyTmux!
+ENV EDITOR=nvim
+RUN git clone https://github.com/gpakosz/.tmux.git /root/src/oh-my-tmux
+RUN ln -s -f /root/src/oh-my-tmux/.tmux.conf /root/.tmux.conf
+RUN cp /root/src/oh-my-tmux/.tmux.conf.local /root/.tmux.conf.local
+
 # ===============================================================================
 
 # VIM Configuration

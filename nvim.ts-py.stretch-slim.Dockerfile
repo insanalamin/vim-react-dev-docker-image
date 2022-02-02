@@ -98,3 +98,17 @@ RUN nvim '+TSUpdateSync yaml' +qall
 RUN nvim '+TSUpdateSync vim' +qall
 RUN nvim '+TSUpdateSync tsx' +qall
 RUN nvim '+TSUpdateSync typescript' +qall
+
+# ===============================================================================
+
+# Zsh & Tmux
+RUN apt-get install -y zsh tmux
+
+# OhMyZsh
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+# OhMyTmux!
+ENV EDITOR=nvim
+RUN git clone https://github.com/gpakosz/.tmux.git /root/src/oh-my-tmux
+RUN ln -s -f /root/src/oh-my-tmux/.tmux.conf /root/.tmux.conf
+RUN cp /root/src/oh-my-tmux/.tmux.conf.local /root/.tmux.conf.local
