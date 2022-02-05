@@ -3,15 +3,26 @@ FROM node:16.13.2-stretch-slim
 RUN apt-get update
 RUN apt-get install -y curl git ack autoconf automake cmake libtool libtool-bin pkg-config software-properties-common xclip locales unzip httpie jq libssl-dev openssl make gcc zlib1g-dev wget 
 
-WORKDIR /opt
-RUN wget https://www.python.org/ftp/python/3.9.9/Python-3.9.9.tgz
-RUN tar xzvf Python-3.9.9.tgz && cd Python-3.9.9 && ./configure && make && make install
-RUN ln -fs /opt/Python-3.9.9/python /usr/bin/python
-RUN python -m ensurepip --upgrade
-RUN wget https://bootstrap.pypa.io/get-pip.py
-RUN python get-pip.py
+# Python installation
+# WORKDIR /opt
+# RUN wget https://www.python.org/ftp/python/3.9.9/Python-3.9.9.tgz
+# RUN tar xzvf Python-3.9.9.tgz && cd Python-3.9.9 && ./configure && make && make install
+# RUN ln -fs /opt/Python-3.9.9/python /usr/bin/python
+# RUN python -m ensurepip --upgrade
+# RUN wget https://bootstrap.pypa.io/get-pip.py
+# RUN python get-pip.py
+
+ENV PATH="/root/miniconda3/bin:${PATH}"
+ARG PATH="/root/miniconda3/bin:${PATH}"
 
 WORKDIR /root/src
+
+RUN wget \
+    https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+    && mkdir /root/.conda \
+    && bash Miniconda3-latest-Linux-x86_64.sh -b \
+    && rm -f Miniconda3-latest-Linux-x86_64.sh 
+RUN conda --version
 
 # Fzf
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git /root/.fzf
@@ -29,6 +40,8 @@ RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appi
   && mv /root/src/squashfs-root / \ 
   && ln -s /squashfs-root/AppRun /usr/bin/nvim
 RUN curl -fLo /root/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+RUN npm install -g neovim
+RUN pip install neovim 
 
 # Locale
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
@@ -49,7 +62,7 @@ RUN npm install -g tree-sitter-cli
 RUN npm install -g typescript typescript-language-server eslint prettier dockerfile-language-server-nodejs vscode-langservers-extracted
 RUN apt-get install -y python3-setuptools python-setuptools
 RUN pip install 'python-lsp-server[all]' pyright pylint --upgrade
-RUN pip install uvicorn requests nats-python psycopg2-binary pyjwt bcrypt uvicorn[standard] fastapi httpx starlette pymongo
+RUN pip install requests nats-python psycopg2-binary pyjwt bcrypt 'uvicorn[standard]' fastapi httpx starlette pymongo
 
 # ===============================================================================
 
@@ -98,6 +111,8 @@ RUN nvim '+TSUpdateSync yaml' +qall
 RUN nvim '+TSUpdateSync vim' +qall
 RUN nvim '+TSUpdateSync tsx' +qall
 RUN nvim '+TSUpdateSync typescript' +qall
+
+COPY plugged/lspkind-nvim/lua/lspkind/init.lua /root/.config/nvim/plugged/lspkind-nvim/lua/lspkind/init.lua
 
 # ===============================================================================
 
